@@ -1,0 +1,37 @@
+# Python
+__pycache__
+.venv
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+.cache
+coverage.xml
+
+# Reports
+reports/*
+!reports/.gitkeep
+
+# Pytest
+.pylint.d/
+.pytest_cache
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST

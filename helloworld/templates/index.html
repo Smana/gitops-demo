@@ -1,0 +1,12 @@
+{% set title = "Main" %}
+
+Hello world !
+{% if system %}
+    <ul>
+        <li>OS = {{ system.os_name }}</li>
+        <li>System = {{ system.system }}</li>
+        <li>Release = {{ system.release }}</li>
+    </ul>
+{% else %}
+    <p>No system info.</p>
+{% endif %}
