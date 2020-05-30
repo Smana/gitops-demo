@@ -31,13 +31,13 @@ jobs:
           tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
 
       - name: Format
-        run: black -l 79 --py36 --check myapp
+        run: black -l 79 --py36 --check helloworld
 
       - name: Complexity
-        run: xenon --max-absolute=B --max-modules=B --max-average=A myapp
+        run: xenon --max-absolute=B --max-modules=B --max-average=A helloworld
 
       - name: Lint
-        run: pylint --reports=n myapp
+        run: pylint --reports=n helloworld
 
       - name: Unit tests
         run: pytest tests
