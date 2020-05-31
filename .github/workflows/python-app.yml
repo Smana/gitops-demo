@@ -68,15 +68,19 @@ jobs:
           ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
 
       - name: Create helloworld chart values
-        run: |
-          touch charts/helloworld/master-values.yaml
-          yq write -i charts/helloworld/master-values.yaml image.tag sha-${GITHUB_SHA:0:7}
+        uses: stefanprodan/kube-tools@v1.5.0
+        with:
+          command: |
+            touch charts/helloworld/master-values.yaml
+            yq write -i charts/helloworld/master-values.yaml image.tag sha-${GITHUB_SHA:0:7}
 
       - name: git-push
         uses: github-actions-x/commit@v2.6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: master
+          push-branch: 'master'
+          commit-message: 'publish'
+          force-add: 'true'
           files: charts/helloworld/master-values.yaml
-          commit-message: "Update helloworld imagetag to sha-${GITHUB_SHA:0:7}"
-          rebase: 'true'
+          name: Smana
+          email: smainklh@gmail.com
