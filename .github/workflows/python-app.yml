@@ -79,8 +79,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: 'master'
-          commit-message: 'publish'
-          force-add: 'true'
+          commit-message: "Update helloworld imagetag to sha-${GITHUB_SHA:0:7}"
+          rebase: 'true'
           files: charts/helloworld/master-values.yaml
           name: Smana
           email: smainklh@gmail.com
