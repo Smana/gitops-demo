@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -73,13 +75,12 @@ jobs:
           command: |
             touch charts/helloworld/master-values.yaml
             yq write -i charts/helloworld/master-values.yaml image.tag sha-${GITHUB_SHA:0:7}
-            cat charts/helloworld/master-values.yaml
 
-      - name: git-push
-        uses: github-actions-x/commit@v2.6
+      - name: Automatically commit Helm charts changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: 'master'
-          commit-message: "Update helloworld imagetag to sha-${GITHUB_SHA:0:7}"
-          name: Smana
-          email: smainklh@gmail.com
+          commit_message: Apply automatic charts changes
+          file_pattern: charts/helloworld/* charts/helloworld/templates/*
+          commit_user_name: Github Actions Bot
+          commit_user_email: smainklh@gmail.com
+          commit_author: Smana <smainklh@gmail.com>
