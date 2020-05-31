@@ -83,5 +83,3 @@ jobs:
           commit-message: "Update helloworld imagetag to sha-${GITHUB_SHA:0:7}"
           name: Smana
           email: smainklh@gmail.com
-          # rebase: 'true'
-          # files: charts/helloworld/master-values.yaml
