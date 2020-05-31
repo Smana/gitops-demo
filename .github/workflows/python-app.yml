@@ -46,7 +46,7 @@ jobs:
         with:
           username: smana
           password: ${{ secrets.dockerhub_password }}
-          repository: smana/python-boilerplate
+          repository: smana/helloworld
           tag_with_ref: true
           tag_with_sha: true
 
