@@ -80,7 +80,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: 'master'
           commit-message: "Update helloworld imagetag to sha-${GITHUB_SHA:0:7}"
-          rebase: 'true'
-          files: charts/helloworld/master-values.yaml
           name: Smana
           email: smainklh@gmail.com
+          # rebase: 'true'
+          # files: charts/helloworld/master-values.yaml
