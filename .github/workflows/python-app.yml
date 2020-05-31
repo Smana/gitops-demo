@@ -64,5 +64,5 @@ jobs:
 
       - name: Trivy vulnerabilities scan
         run: |
-          ./trivy --exit-code 0 --cache-dir .trivycache/ --severity HIGH --no-progress smana/python-boilerplate:sha-${GITHUB_SHA:0:7}
-          ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress smana/python-boilerplate:sha-${GITHUB_SHA:0:7}
+          ./trivy --exit-code 0 --cache-dir .trivycache/ --severity HIGH --no-progress smana/hello:sha-${GITHUB_SHA:0:7}
+          ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
