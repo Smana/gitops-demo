@@ -68,6 +68,7 @@ jobs:
           ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
 
       - name: Create helloworld chart values
+        uses: stefanprodan/kube-tools@v1.5.0
         run: |
           touch charts/helloworld/master-values.yaml
           yq write -i charts/helloworld/master-values.yaml image.tag sha-${GITHUB_SHA:0:7}
