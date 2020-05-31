@@ -73,6 +73,7 @@ jobs:
           command: |
             touch charts/helloworld/master-values.yaml
             yq write -i charts/helloworld/master-values.yaml image.tag sha-${GITHUB_SHA:0:7}
+            cat charts/helloworld/master-values.yaml
 
       - name: git-push
         uses: github-actions-x/commit@v2.6
