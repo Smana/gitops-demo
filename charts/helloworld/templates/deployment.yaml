@@ -2,6 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "helloworld.fullname" . }}
+  annotations:
+    vault.hashicorp.com/agent-inject: "true"
+    vault.hashicorp.com/agent-inject-secret-foo__bar__baz: kv/demo/env
+    vault.hashicorp.com/agent-inject-status: update
+    vault.hashicorp.com/role: helloworld
   labels:
 {{ include "helloworld.labels" . | indent 4 }}
 spec:
@@ -20,6 +25,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      serviceAccountName: helloworld
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
