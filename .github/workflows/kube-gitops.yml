@@ -1,10 +1,6 @@
-# This workflow will build the docker image and run the tests described in the Makefile
-
-name: Python application
+name: Kubernetes GitOps
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
@@ -69,7 +65,14 @@ jobs:
           ./trivy --exit-code 0 --cache-dir .trivycache/ --severity HIGH --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
           ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
 
-      - name: Create helloworld chart values
+      - name: Check Kubernetes yamls
+        uses: stefanprodan/kube-tools@v1.5.0
+        with:
+          helmv3: 3.2.1
+          command: |
+            helmv3 template ./charts/helloworld | kubeval --strict
+
+      - name: Create Helm charts values
         uses: stefanprodan/kube-tools@v1.5.0
         with:
           command: |
