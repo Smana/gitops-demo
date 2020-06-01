@@ -6,7 +6,7 @@ networks:
 services:
   app: &app
     build: .
-    ports:                                                                                                                                                                                                        
+    ports:
       - 8080
     volumes:
       - .:/app
