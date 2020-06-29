@@ -1,0 +1,29 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+metadata:
+  name: helloworld
+build:
+  artifacts:
+    - image: smana/helloworld
+      sync:
+        infer: ["**/*.html"]
+test:
+  - image: smana/helloworld
+    structureTests:
+      - "./tests/structure/*"
+deploy:
+  helm:
+    releases:
+      - name: helloworld
+        chartPath: charts/helloworld
+        artifactOverrides:
+          image: "smana/helloworld"
+profiles:
+  - name: production
+    deploy:
+      helm:
+        releases:
+          - name: helloworld
+            chartPath: charts/helloworld
+            valuesFiles:
+              - "charts/helloworld/prod-values.yaml"

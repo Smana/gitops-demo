@@ -35,3 +35,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Kubernetes
+.kubeconfig
+
+# VSCode
+.vscode/*

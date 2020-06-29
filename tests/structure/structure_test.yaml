@@ -1,0 +1,29 @@
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: Check Format
+    command: "black"
+    args: ["-l", "79", "--py36", "--check", "helloworld"]
+
+  - name: Check Imports
+    command: "isort"
+    args: ["-y", "--check-only", "-rc", "helloworld/.", "tests/."]
+
+  - name: Check Complexity
+    command: "xenon"
+    args:
+      [
+        "--max-absolute=B",
+        "--max-modules=B",
+        "--max-average=A",
+        "helloworld",
+        "helloworld",
+      ]
+
+  - name: Code Analysis
+    command: "pylint"
+    args: ["--reports=n", "helloworld"]
+
+  - name: Unit tests
+    command: "pytest"
+    args: ["tests"]
