@@ -6,18 +6,10 @@ from os import path
 
 from setuptools import setup
 
-with open(
-    path.join(path.abspath(path.dirname(__file__)), "README.md"),
-    encoding="utf-8",
-) as f:
-    LONG_DESCRIPTION = f.read()
-
 setup(
     name="helloworld",
     version="0.0.1",
     description="Web sample app",
-    long_description=LONG_DESCRIPTION,
-    long_description_content_type="text/markdown",
     url="https://github.com/Smana/web-sample-app",
     author="Smana",
     author_email="smainklh@gmail.com",

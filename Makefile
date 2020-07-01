@@ -1,46 +1,35 @@
-VERSION = `git rev-parse --short HEAD`
-COMPOSE = docker-compose -p helloworld
+.PHONY: build dev lint format format-imports test
 
-.PHONY: run
-run:
-	$(COMPOSE) build app
-	$(COMPOSE) up app
+SKAFFOLD = ./run-k3d.sh && skaffold
 
+VENV_NAME?=.venv
+VENV_BIN=$(shell pwd)/${VENV_NAME}/bin
+VENV_ACTIVATE=. ${VENV_BIN}/activate
+PYTHON=${VENV_BIN}/python3
 
-.PHONY: down
-down:
-	$(COMPOSE) down --volumes
+.PHONY: build
+build:
+	$(SKAFFOLD) build
 
+.PHONY: dev
+dev:
+	$(SKAFFOLD) dev --port-forward
 
-.PHONY: format
-format:
-	$(COMPOSE) build format-imports
-	$(COMPOSE) run format-imports
-	$(COMPOSE) build format
-	$(COMPOSE) run format
+venv: $(VENV_NAME)/bin/activate
+$(VENV_NAME)/bin/activate: setup.py
+	test -d $(VENV_NAME) || virtualenv -p python3 $(VENV_NAME)
+	${PYTHON} -m pip install -U pip setuptools
+	${PYTHON} -m pip install -e .[devel]
+	touch $(VENV_NAME)/bin/activate
 
+lint: venv
+	${PYTHON} -m pylint --reports=n helloworld
 
-.PHONY: check-format
-check-format:
-	$(COMPOSE) build check-format-imports
-	$(COMPOSE) run check-format-imports
-	$(COMPOSE) build check-format
-	$(COMPOSE) run check-format
+format: venv
+	${PYTHON} -m black -l 79 --py36 helloworld
 
+format-imports: venv
+	${PYTHON} -m isort -y -rc helloworld/. tests/.
 
-.PHONY: style
-style: check-format
-	$(COMPOSE) build style
-	$(COMPOSE) run style
-
-
-.PHONY: complexity
-complexity:
-	$(COMPOSE) build complexity
-	$(COMPOSE) run complexity
-
-
-.PHONY: test-unit
-test-unit:
-	$(COMPOSE) build test-unit
-	$(COMPOSE) run test-unit
+test: venv
+	${PYTHON} -m pytest tests
