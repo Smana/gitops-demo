@@ -1,1 +1,2 @@
-image: smana/helloworld:sha-12f0660
+image: smana/helloworld:sha-d62aa8f
+replicaCount: 50
