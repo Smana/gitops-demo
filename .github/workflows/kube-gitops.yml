@@ -77,7 +77,7 @@ jobs:
         with:
           command: |
             touch charts/helloworld/master-values.yaml
-            yq write -i charts/helloworld/master-values.yaml image.tag sha-${GITHUB_SHA:0:7}
+            yq write -i charts/helloworld/master-values.yaml image sha-${GITHUB_SHA:0:7}
 
       - name: Automatically commit Helm charts changes
         uses: stefanzweifel/git-auto-commit-action@v4
