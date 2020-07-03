@@ -1,1 +1,2 @@
-image: sha-dd0d955
+image: smana/helloworld:sha-12f0660
+replicaCount: 50
