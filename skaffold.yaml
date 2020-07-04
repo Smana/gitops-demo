@@ -13,17 +13,12 @@ test:
       - "./tests/structure/*"
 deploy:
   helm:
+    flags:
+      install:
+        - "--create-namespace"
     releases:
       - name: helloworld
         chartPath: charts/helloworld
+        namespace: demo
         artifactOverrides:
           image: "smana/helloworld"
-profiles:
-  - name: production
-    deploy:
-      helm:
-        releases:
-          - name: helloworld
-            chartPath: charts/helloworld
-            valuesFiles:
-              - "charts/helloworld/prod-values.yaml"

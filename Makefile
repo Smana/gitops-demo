@@ -1,19 +1,24 @@
-.PHONY: build dev lint format format-imports test
+.PHONY: build k3d sync-secrets local-dev lint format format-imports test
 
-SKAFFOLD = ./run-k3d.sh && skaffold
 
 VENV_NAME?=.venv
 VENV_BIN=$(shell pwd)/${VENV_NAME}/bin
 VENV_ACTIVATE=. ${VENV_BIN}/activate
 PYTHON=${VENV_BIN}/python3
 
-.PHONY: build
-build:
-	$(SKAFFOLD) build
 
-.PHONY: dev
-dev:
-	$(SKAFFOLD) dev --port-forward
+k3d:
+	./run-k3d.sh
+
+sync-secrets: k3d
+	./sync-secrets.sh
+
+build: k3d
+	skaffold build
+
+local-dev: k3d sync-secrets
+	skaffold dev --port-forward
+
 
 venv: $(VENV_NAME)/bin/activate
 $(VENV_NAME)/bin/activate: setup.py
