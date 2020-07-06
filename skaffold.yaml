@@ -2,23 +2,29 @@ apiVersion: skaffold/v2beta5
 kind: Config
 metadata:
   name: helloworld
-build:
-  artifacts:
-    - image: smana/helloworld
-      sync:
-        infer: ["**/*.html"]
-test:
-  - image: smana/helloworld
-    structureTests:
-      - "./tests/structure/*"
-deploy:
-  helm:
-    flags:
-      install:
-        - "--create-namespace"
-    releases:
-      - name: helloworld
-        chartPath: charts/helloworld
-        namespace: demo
-        artifactOverrides:
-          image: "smana/helloworld"
+profiles:
+  - name: "local"
+    build:
+      artifacts:
+        - image: smana/helloworld
+          docker:
+            target: "tester"
+          sync:
+            manual:
+              - dest: "."
+                src: "helloworld/**/*.html"
+    test:
+      - image: smana/helloworld
+        structureTests:
+          - "./tests/structure/*"
+    deploy:
+      helm:
+        flags:
+          install:
+            - "--create-namespace"
+        releases:
+          - name: helloworld
+            chartPath: charts/helloworld
+            namespace: demo
+            artifactOverrides:
+              image: "smana/helloworld"

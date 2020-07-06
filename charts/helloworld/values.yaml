@@ -3,13 +3,8 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-image: smana/helloworld
+image: smana/helloworld:sha-ce3f0fe
 imagePullPolicy: IfNotPresent
-
-#image:
-#  repository: smana/helloworld
-#  tag: latest
-#  pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""

@@ -65,17 +65,19 @@ done
 EXEC="kubectl exec -ti --namespace secrets vault-0 --"
 
 # Write demo secrets
-${EXEC} vault kv put kv/demo/env FOO=BAR
+if ! ${EXEC} vault kv list /kv/demo &>/dev/null; then
+  sleep 10
+  ${EXEC} vault kv put kv/demo/env FOO=BAR
 
 ${EXEC} vault policy write demo - <<EOF
-path "kv/demo/env" {
-  capabilities = ["read"]
-}
+  path "kv/demo/env" {
+    capabilities = ["read"]
+  }
 EOF
 
-${EXEC} vault write auth/kubernetes/role/helloworld \
-  bound_service_account_names=helloworld \
-  bound_service_account_namespaces=demo \
-  policies=demo \
-  ttl=24h
-
+  ${EXEC} vault write auth/kubernetes/role/helloworld \
+    bound_service_account_names=helloworld \
+    bound_service_account_namespaces=demo \
+    policies=demo \
+    ttl=24h
+fi

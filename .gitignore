@@ -38,7 +38,7 @@ MANIFEST
 
 # Kubernetes
 .kubeconfig
-*sa.json
+**sa.json
 
 # VSCode
 .vscode/*

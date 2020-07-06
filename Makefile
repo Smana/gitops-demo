@@ -1,4 +1,4 @@
-.PHONY: build k3d sync-secrets local-dev lint format format-imports test
+.PHONY: build k3d sync-secrets dev lint format format-imports test
 
 
 VENV_NAME?=.venv
@@ -16,8 +16,8 @@ sync-secrets: k3d
 build: k3d
 	skaffold build
 
-local-dev: k3d sync-secrets
-	skaffold dev --port-forward
+dev: k3d sync-secrets
+	skaffold dev --port-forward -p local
 
 
 venv: $(VENV_NAME)/bin/activate
