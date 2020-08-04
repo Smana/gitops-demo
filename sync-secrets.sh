@@ -51,7 +51,8 @@ fi
 
 echo -e "\n${INFO}: Syncing Vault secrets ..."
 
-k3d get kubeconfig ${CLUSTER_NAME} --switch
+k3d kubeconfig get ${CLUSTER_NAME} > ${KUBECONFIG}
+kubectl config use-context k3d-${CLUSTER_NAME}
 until [ ${ATTEMPT} -eq ${RETRIES} ]; do
   if ! [ "$(kubectl get po -n secrets vault-0 -o jsonpath='{.status.phase}')" == "Running" ]; then
     echo -e "${WARN}: Waiting for local Vault instance to be available"

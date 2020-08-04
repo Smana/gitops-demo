@@ -1,11 +1,8 @@
 .PHONY: build k3d sync-secrets dev lint format format-imports test
 
-
-VENV_NAME?=.venv
-VENV_BIN=$(shell pwd)/${VENV_NAME}/bin
-VENV_ACTIVATE=. ${VENV_BIN}/activate
-PYTHON=${VENV_BIN}/python3
-
+PACKAGE_DIR=helloworld
+IMAGE_NAME=smana/helloworld
+IMAGE_TAG=$(shell git rev-parse --short HEAD)-dirty
 
 k3d:
 	./run-k3d.sh
@@ -14,27 +11,22 @@ sync-secrets: k3d
 	./sync-secrets.sh
 
 build: k3d
-	skaffold build
+	skaffold build -p local --skip-tests
 
 dev: k3d sync-secrets
 	skaffold dev --port-forward -p local
 
+format: build
+	docker run --rm -v $(shell pwd)/${PACKAGE_DIR}:/app/${PACKAGE_DIR} ${IMAGE_NAME}:${IMAGE_TAG} black -l 79 --py36 ${PACKAGE_DIR}
 
-venv: $(VENV_NAME)/bin/activate
-$(VENV_NAME)/bin/activate: setup.py
-	test -d $(VENV_NAME) || virtualenv -p python3 $(VENV_NAME)
-	${PYTHON} -m pip install -U pip setuptools
-	${PYTHON} -m pip install -e .[devel]
-	touch $(VENV_NAME)/bin/activate
+format-imports: build
+	docker run --rm -v $(shell pwd)/${PACKAGE_DIR}:/app/${PACKAGE_DIR} -v $(shell pwd)/tests:/app/tests ${IMAGE_NAME}:${IMAGE_TAG} isort -y -rc ${PACKAGE_DIR}/. tests/.
 
-lint: venv
-	${PYTHON} -m pylint --reports=n helloworld
+complexity: build
+	docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} xenon --max-absolute B --max-modules B --max-average A ${PACKAGE_DIR}/
 
-format: venv
-	${PYTHON} -m black -l 79 --py36 helloworld
+lint: build
+	docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} pylint --reports=n ${PACKAGE_DIR}
 
-format-imports: venv
-	${PYTHON} -m isort -y -rc helloworld/. tests/.
-
-test: venv
-	${PYTHON} -m pytest tests
+test: build
+	docker run --rm -v $(shell pwd)/reports:/app/reports ${IMAGE_NAME}:${IMAGE_TAG} pytest tests

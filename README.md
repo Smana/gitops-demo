@@ -3,8 +3,8 @@
 ## Requirements
 
 * docker
-* k3d
-* python virtualenv
+* k3d v3.0.x
+* skaffold v1.13.x
 
 ## Install k3d
 
