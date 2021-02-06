@@ -17,12 +17,6 @@ setup(
     data_files=[("config", "config/helloworld.yaml")],
     install_requires=[
         "click==7.1.2",
-        "pytest-cov == 2.8.1",
-        "pytest == 3.8.2",
-        "pylint == 2.4.4",
-        "black == 18.9b0",
-        "isort == 4.3.4",
-        "xenon == 0.7.0",
         "jinja2 == 2.11.2",
         "aiohttp == 3.6.2",
         "aiohttp-jinja2 == 1.2.0",
