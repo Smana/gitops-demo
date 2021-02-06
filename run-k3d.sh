@@ -10,7 +10,7 @@ ERR=${bldred}ERROR${txtrst}
 INFO=${bldgre}INFO${txtrst}
 WARN=${bldylw}WARNING${txtrst}
 
-REQUIRED_BINARIES=( kubectl helm skaffold velero k3d )
+REQUIRED_BINARIES=( kubectl helm skaffold k3d )
 
 check_local_env()
 {
@@ -49,7 +49,6 @@ while (($#)); do
     -h | --help) usage; exit 0;;
     -n | --name) CLUSTER_NAME=${2}; shift 2;;
     -k | --kubeconfig) KUBECONFIG=${2}; shift 2;;
-    -s | --serviceaccount) GCP_SA=${2}; shift 2;;
     *)
         echo "${err} : Unknown option"
         exit 3
@@ -63,12 +62,7 @@ fi
 if [[ -z ${KUBECONFIG} ]]; then
     KUBECONFIG=$(pwd)/.kubeconfig
 fi
-if [[ -z ${GCP_SA} ]]; then
-    GCP_SA=$(pwd)/.k8s-dev-velero-sa.json
-fi
 
-BACKUP_VERSION=v1.0.0
-BUCKET_NAME=k8s-dev-velero
 
 check_local_env
 
@@ -87,32 +81,3 @@ else
     fi
 fi
 kubectl config use-context k3d-${CLUSTER_NAME}
-
-# Restore backup with velero
-
-## Configure velero
-if ! (kubectl get deploy -n velero velero &>/dev/null); then
-    if ! [[ -f ${GCP_SA} ]]; then
-        echo -e "${ERR}: GCP serviceaccount ${GCP_SA} not found !"
-        exit 1
-    fi
-    echo -e "\n${INFO}: Configuring Velero ..."
-    velero install --provider gcp --plugins velero/velero-plugin-for-gcp:v1.0.0 --bucket ${BUCKET_NAME} --secret-file ${GCP_SA}
-fi
-kubectl rollout status deployment velero --namespace velero
-
-## Restore backup
-RETRIES=8
-ATTEMPT=0
-SLEEP=3
-if ! (kubectl get ns secrets &>/dev/null); then
-    until [ ${ATTEMPT} -eq ${RETRIES} ]; do
-        if [ "$(velero backup get -o json | jq -r '.metadata.name')" == "local-${BACKUP_VERSION}" ]; then
-            velero create restore local-${BACKUP_VERSION}-$(date +%s) --from-backup local-${BACKUP_VERSION}
-            break
-        fi
-        echo -e "${WARN}: Waiting for the backup local-${BACKUP_VERSION} to be available"
-        sleep ${SLEEP}
-        ((ATTEMPT++))
-    done
-fi

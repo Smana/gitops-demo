@@ -1,4 +1,4 @@
-.PHONY: build k3d sync-secrets dev lint format format-imports test
+.PHONY: build k3d dev lint format format-imports test
 
 PACKAGE_DIR=helloworld
 IMAGE_NAME=smana/helloworld
@@ -7,13 +7,10 @@ IMAGE_TAG=$(shell git rev-parse --short HEAD)-dirty
 k3d:
 	./run-k3d.sh
 
-sync-secrets: k3d
-	./sync-secrets.sh
-
 build: k3d
 	skaffold build -p local --skip-tests
 
-dev: k3d sync-secrets
+dev: k3d
 	skaffold dev --port-forward -p local
 
 format: build

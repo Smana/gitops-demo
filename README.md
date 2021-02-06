@@ -30,7 +30,7 @@ k3d-default-master-0   Ready    master   62m   v1.18.4+k3s1
 
 ## Local dev
 
-We use a combination of virtualenv for formating and linting, then skaffold is used to
+We use a combination of docker commands for formating and linting, then skaffold is used to
 
 * build the image
 * test image built with structure-tests
@@ -92,6 +92,6 @@ build:
 
 This is a simple web applications to demonstrate a GitOps workflow using **Github Actions** and [**ArgoCD**](https://argoproj.github.io/argo-cd/).
 
-At the end of the pipeline the Helm values are commited for a given pull-request.
+At the end of the pipeline the Helm values are committed for a given pull-request.
 
 When this pull-request is merged, ArgoCD automatically deploys the change in the target Kubernetes cluster.
