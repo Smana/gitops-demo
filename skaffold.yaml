@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta5
+apiVersion: skaffold/v2beta11
 kind: Config
 metadata:
   name: helloworld
@@ -19,12 +19,14 @@ profiles:
           - "./tests/structure/*"
     deploy:
       helm:
-        flags:
-          install:
-            - "--create-namespace"
         releases:
           - name: helloworld
             chartPath: charts/helloworld
             namespace: demo
+            createNamespace: True
+            wait: True
+            setValues:
+              vaultInject:
+                enabled: True
             artifactOverrides:
               image: "smana/helloworld"
