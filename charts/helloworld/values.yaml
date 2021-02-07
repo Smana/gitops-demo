@@ -45,3 +45,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+vaultInject:
+  enabled: False

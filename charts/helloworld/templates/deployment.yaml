@@ -13,10 +13,9 @@ spec:
   template:
     metadata:
       annotations:
-        vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/agent-inject-secret-foo__bar__baz: kv/demo/env
-        vault.hashicorp.com/agent-inject-status: update
-        vault.hashicorp.com/role: helloworld
+        {{- if .Values.vaultInject.enabled }}
+        {{- include "helloworld.secrets" . | nindent 8 }}
+        {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "helloworld.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
