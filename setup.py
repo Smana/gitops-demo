@@ -17,6 +17,7 @@ setup(
     data_files=[("config", "config/helloworld.yaml")],
     install_requires=[
         "click==7.1.2",
+        "PyYAML==5.4.1",
         "jinja2 == 2.11.2",
         "aiohttp == 3.6.2",
         "aiohttp-jinja2 == 1.2.0",

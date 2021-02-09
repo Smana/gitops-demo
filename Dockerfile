@@ -15,14 +15,11 @@ ADD helloworld /app/helloworld
 ADD tests /app/tests
 ADD test_requirements.txt /app
 
-RUN python -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
-
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r test_requirements.txt
 RUN pip install -e .
 
-FROM python:3.8.3-alpine3.11 as builder
+FROM python:3.8.3-alpine3.11 as release
 
 RUN apk add --no-cache gcc musl-dev
 
@@ -38,21 +35,11 @@ ADD pylintrc /app
 ADD helloworld /app/helloworld
 ADD tests /app/tests
 
-RUN python -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
-
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install -e .
 
-FROM python:3.8.3-alpine3.11 as release
-
 RUN mkdir -p /app && \
     adduser -h /app -s /bin/false -DH www
-
-COPY --from=builder /app/venv /app/venv
-
-WORKDIR /app
-ENV PATH="/app/venv/bin:$PATH"
 
 RUN chown -R www. /app
 
