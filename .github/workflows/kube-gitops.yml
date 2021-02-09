@@ -83,7 +83,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply automatic charts changes
-          file_pattern: charts/helloworld/* charts/helloworld/templates/*
+          file_pattern: flux/*
           commit_user_name: Github Actions Bot
           commit_user_email: smainklh@gmail.com
-          commit_author: Smana <smainklh@gmail.com>
+          commit_author: Actions bot <smainklh@gmail.com>
