@@ -89,11 +89,7 @@ build:
 
 ## GitOps workflow
 
-This is a simple web applications to demonstrate a GitOps workflow using **Github Actions** and [**ArgoCD**](https://argoproj.github.io/argo-cd/).
-
-At the end of the pipeline the Helm values are committed for a given pull-request.
-
-When this pull-request is merged, ArgoCD automatically deploys the change in the target Kubernetes cluster.
+This is a simple web applications to demonstrate a GitOps workflow using **Github Actions** and [**Flux v2**](https://toolkit.fluxcd.io/).
 
 ## Secrets (optional)
 
