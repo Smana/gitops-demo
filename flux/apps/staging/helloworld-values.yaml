@@ -10,5 +10,4 @@ spec:
   test:
     enable: false
   values:
-    image: "smana/helloworld:sha-f5096b2"
     replicaCount: 3

@@ -77,8 +77,7 @@ jobs:
         uses: stefanprodan/kube-tools@v1.5.0
         with:
           command: |
-            touch charts/helloworld/master-values.yaml
-            yq eval -i '.image="smana/helloworld:sha-'${GITHUB_SHA:0:7}'"' charts/helloworld/master-values.yaml
+            yq eval -i '.spec.values.image="smana/helloworld:sha-'${GITHUB_SHA:0:7}'"' flux/apps/base/helloworld/release.yaml
 
       - name: Automatically commit Helm charts changes
         uses: stefanzweifel/git-auto-commit-action@v4
