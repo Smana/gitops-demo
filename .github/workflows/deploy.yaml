@@ -11,6 +11,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
     - name: Create Helm charts values
       uses: stefanprodan/kube-tools@v1.5.0
       with:
