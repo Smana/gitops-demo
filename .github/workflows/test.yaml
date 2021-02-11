@@ -1,4 +1,4 @@
-name: Kubernetes GitOps
+name: Tests code and manifests
 
 on:
   pull_request:
@@ -72,18 +72,3 @@ jobs:
           helmv3: 3.2.1
           command: |
             helmv3 template ./charts/helloworld | kubeval --strict
-
-      - name: Create Helm charts values
-        uses: stefanprodan/kube-tools@v1.5.0
-        with:
-          command: |
-            yq eval -i '.spec.values.image="smana/helloworld:sha-'${GITHUB_SHA:0:7}'"' ./charts/helloworld/values.yaml
-
-      - name: Automatically commit Helm charts changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply automatic charts changes
-          file_pattern: flux/*
-          commit_user_name: Github Actions Bot
-          commit_user_email: smainklh@gmail.com
-          commit_author: Actions bot <smainklh@gmail.com>
