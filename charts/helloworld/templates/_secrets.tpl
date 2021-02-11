@@ -1,6 +1,7 @@
 {{- define "helloworld.secrets" }}
 vault.hashicorp.com/agent-inject: "true"
 vault.hashicorp.com/role: "helloworld"
+vault.hashicorp.com/tls-skip-verify: "True"
 vault.hashicorp.com/agent-inject-secret-env: "secret/app/helloworld"
 # Environment variable export template
 vault.hashicorp.com/agent-inject-template-env: |
