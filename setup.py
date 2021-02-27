@@ -19,7 +19,7 @@ setup(
         "click==7.1.2",
         "PyYAML==5.4.1",
         "jinja2 == 2.11.2",
-        "aiohttp == 3.6.2",
+        "aiohttp == 3.7.4",
         "aiohttp-jinja2 == 1.2.0",
     ],
     include_package_data=True,
