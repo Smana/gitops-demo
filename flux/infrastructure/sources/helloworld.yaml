@@ -5,4 +5,4 @@ metadata:
   namespace: flux-demo
 spec:
   interval: 1m
-  url: https://github.com/Smana/gh-actions-gitops
+  url: https://github.com/Smana/gitops-demo
