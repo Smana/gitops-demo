@@ -4,3 +4,4 @@ namespace: nginx
 resources:
   - namespace.yaml
   - release.yaml
+  - secret.yaml
