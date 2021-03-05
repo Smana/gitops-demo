@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bitnami
-        namespace: flux-system
+        namespace: nginx
       version: "8.5.5"
   interval: 1h0m0s
   install:
