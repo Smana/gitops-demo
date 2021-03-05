@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: flux-demo
 resources:
   - helloworld.yaml
+  - bitnami.yaml
