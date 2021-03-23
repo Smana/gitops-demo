@@ -12,6 +12,7 @@ spec:
         kind: GitRepository
         name: helloworld
         namespace: flux-demo
+        ref: main
   interval: 5m
   install:
     remediation:
