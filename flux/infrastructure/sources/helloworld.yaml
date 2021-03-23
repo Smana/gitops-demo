@@ -6,4 +6,5 @@ metadata:
 spec:
   interval: 1m
   url: https://github.com/Smana/gitops-demo
-  ref: main
+  ref:
+    branch: main
