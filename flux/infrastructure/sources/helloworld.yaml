@@ -2,7 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: helloworld
-  namespace: flux-demo
+  namespace: demo
 spec:
   interval: 1m
   url: https://github.com/Smana/gitops-demo
