@@ -29,16 +29,16 @@ spec:
             - helloworld
             - serve
           env:
-            - name: SEC1
+            - name: USER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Chart.Name }}
-                  key: secret1
-            - name: SEC2
+                  key: user
+            - name: PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Chart.Name }}
-                  key: secret2
+                  key: password
           ports:
             - name: http
               containerPort: 8080
