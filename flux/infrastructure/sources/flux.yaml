@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: flux
+spec:
+  interval: 30m0s
+  ref:
+    branch: main
+  url: https://github.com/fluxcd/flux2
+
