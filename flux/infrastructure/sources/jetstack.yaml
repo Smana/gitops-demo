@@ -1,8 +1,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: bitnami
-  namespace: nginx
+  name: jetstack
 spec:
   interval: 30m
-  url: https://charts.bitnami.com/bitnami
+  url: https://charts.jetstack.io
