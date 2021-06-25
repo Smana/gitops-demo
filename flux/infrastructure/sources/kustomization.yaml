@@ -5,3 +5,4 @@ namespace: flux-system
 resources:
   - helloworld.yaml
   - jetstack.yaml
+  - prometheus-community.yaml
