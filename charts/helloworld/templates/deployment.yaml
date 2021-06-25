@@ -12,10 +12,6 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-      annotations:
-        {{- if .Values.vaultInject.enabled }}
-        {{- include "helloworld.secrets" . | nindent 8 }}
-        {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "helloworld.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
@@ -32,6 +28,17 @@ spec:
           command:
             - helloworld
             - serve
+          env:
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}
+                  key: user
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}
+                  key: password
           ports:
             - name: http
               containerPort: 8080

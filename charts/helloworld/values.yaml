@@ -1,6 +1,10 @@
 # Default values for helloworld.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  environment: "staging"
+  cluster: ""
+  region: "eu-west-1"
 
 replicaCount: 1
 image: smana/helloworld:sha-ce3f0fe

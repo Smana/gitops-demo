@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: helloworld
-  namespace: flux-demo
+  namespace: demo
 spec:
   releaseName: helloworld
   chart:
@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: helloworld
-        namespace: flux-demo
+        namespace: flux-system
   interval: 5m
   install:
     remediation:

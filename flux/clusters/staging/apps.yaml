@@ -13,8 +13,12 @@ spec:
   path: ./flux/apps/staging
   prune: true
   validation: client
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v1beta1
       kind: HelmRelease
       name: helloworld
-      namespace: flux-demo
+      namespace: demo
