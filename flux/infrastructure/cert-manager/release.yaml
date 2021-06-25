@@ -6,11 +6,11 @@ spec:
   releaseName: cert-manager
   chart:
     spec:
-      chart: nginx
+      chart: cert-manager
       sourceRef:
         kind: HelmRepository
         name: jetstack
-        namespace: cert-manager
+        namespace: flux-system
       version: "v1.4.0"
   interval: 10m0s
   install:
