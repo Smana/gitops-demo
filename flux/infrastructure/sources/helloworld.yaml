@@ -6,4 +6,4 @@ spec:
   interval: 1m
   url: https://github.com/Smana/gitops-demo
   ref:
-    branch: kmtx-demo
+    branch: main
