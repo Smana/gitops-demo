@@ -3,28 +3,26 @@
 ## Requirements
 
 * docker
-* k3d >v3.0.x
-* skaffold >v1.19.x
+* k3d >v4.x.x
+* skaffold >v1.2x.x
 
 ## Install k3d
 
 Install k3d from the release page [here](https://github.com/rancher/k3d/releases)
-required version > v3.x.x
+required version > v4.x.x
 
 
 ```console
 $ export KUBECONFIG=~/.kube/skaffold
-$ k3d create cluster default --api-port 6550 -p 8081:80@loadbalancer
-$ k3d get kubeconfig default --switch
-/home/smana/.kube/skaffold
+$ k3d cluster create staging -p "8081:80@loadbalancer"
 ```
 
 Check that the cluster is available
 
 ```console
 kubectl get nodes
-NAME                 STATUS   ROLES    AGE   VERSION
-k3d-default-master-0   Ready    master   62m   v1.18.4+k3s1
+NAME                   STATUS   ROLES                  AGE   VERSION
+k3d-staging-server-0   Ready    control-plane,master   71m   v1.21.1+k3s1
 ```
 
 ## Local dev
@@ -91,7 +89,11 @@ build:
 
 This is a simple web applications to demonstrate a GitOps workflow using **Github Actions** and [**Flux v2**](https://toolkit.fluxcd.io/).
 
-## Secrets (optional)
+## Secrets management with SOPS
 
-It is possible to use the Vault dynamic secrets injection in order to add secrets to your applications.
-It requires to set it up, and storing your secrets in the local (inside the k3d instance).
+In order to update the secrets you have to import the GPG key per cluster.
+Example with staging:
+
+```console
+$ gpg --import ./flux/clusters/staging/.sops.pub.asc
+```
