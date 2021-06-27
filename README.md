@@ -89,11 +89,7 @@ build:
 
 This is a simple web applications to demonstrate a GitOps workflow using **Github Actions** and [**Flux v2**](https://toolkit.fluxcd.io/).
 
-## Secrets management with SOPS
+## Deploy using Flux
 
-In order to update the secrets you have to import the GPG key per cluster.
-Example with staging:
-
-```console
-$ gpg --import ./flux/clusters/staging/.sops.pub.asc
-```
+This is a good practice to separate the code of our application and the config to define how it is deployed.
+The GitOps workflow is defined if the repository [**flux-demo**](https://github.com/Smana/flux-demo)
