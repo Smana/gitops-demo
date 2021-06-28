@@ -43,14 +43,6 @@ jobs:
       - name: Unit tests
         run: pytest tests
 
-      - uses: docker/build-push-action@v1
-        with:
-          username: smana
-          password: ${{ secrets.dockerhub_password }}
-          repository: smana/helloworld
-          tag_with_ref: true
-          tag_with_sha: true
-
       - name: Check Kubernetes yamls
         uses: stefanprodan/kube-tools@v1.5.0
         with:
