@@ -7,12 +7,15 @@ on:
       - staging
 
 jobs:
-  build:
+  quality:
+    name: "Check code quality ✨"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Dockerfile lint
+        uses: hadolint/hadolint-action@v1.5.0
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -23,25 +26,15 @@ jobs:
         run: |
           pip install --upgrade pip setuptools wheel
           pip install -r test_requirements.txt
-          pip install -e .
-
-      - name: Install Trivy (Vulns scan)
-        run: |
-          export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-          wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
-          tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
 
       - name: Format
         run: black -l 79 --py36 --check helloworld
 
-      - name: Complexity
+      - name: Check code complexity
         run: xenon --max-absolute=B --max-modules=B --max-average=A helloworld
 
-      - name: Lint
+      - name: Python lint
         run: pylint --reports=n helloworld
-
-      - name: Unit tests
-        run: pytest tests
 
       - name: Check Kubernetes yamls
         uses: stefanprodan/kube-tools@v1.5.0
@@ -49,3 +42,23 @@ jobs:
           helmv3: 3.2.1
           command: |
             helmv3 template ./charts/helloworld | kubeval --strict
+
+  tests:
+    name: "Run tests 🧐"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip setuptools wheel
+          pip install -r test_requirements.txt
+
+      - name: Unit tests
+        run: pytest tests
