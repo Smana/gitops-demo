@@ -1,4 +1,4 @@
-FROM python:3.8.3-alpine3.11 as tester
+FROM python:3.8.10-alpine3.13 as tester
 
 RUN apk add --no-cache gcc musl-dev
 
@@ -19,7 +19,7 @@ RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r test_requirements.txt
 RUN pip install -e .
 
-FROM python:3.8.3-alpine3.11 as release
+FROM python:3.8.10-alpine3.13 as release
 
 RUN apk add --no-cache gcc musl-dev
 
