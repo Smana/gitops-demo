@@ -26,6 +26,7 @@ jobs:
         run: |
           pip install --upgrade pip setuptools wheel
           pip install -r test_requirements.txt
+          pip install -e .
 
       - name: Format
         run: black -l 79 --py36 --check helloworld
@@ -37,10 +38,11 @@ jobs:
         run: pylint --reports=n helloworld
 
       - name: Check Kubernetes yamls
-        uses: stefanprodan/kube-tools@v1.5.0
+        uses: stefanprodan/kube-tools@v1
         with:
-          helmv3: 3.2.1
+          helmv3: 3.6.1
           command: |
+            echo "Run kubeval"
             helmv3 template ./charts/helloworld | kubeval --strict
 
   tests:
@@ -59,6 +61,7 @@ jobs:
         run: |
           pip install --upgrade pip setuptools wheel
           pip install -r test_requirements.txt
+          pip install -e .
 
       - name: Unit tests
         run: pytest tests
