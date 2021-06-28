@@ -2,7 +2,9 @@ name: Tests code and manifests
 
 on:
   pull_request:
-    branches: [master]
+    branches:
+      - main
+      - staging
 
 jobs:
   build:
@@ -48,23 +50,6 @@ jobs:
           repository: smana/helloworld
           tag_with_ref: true
           tag_with_sha: true
-
-      - name: Cache Trivy reports
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-trivy-reports
-        with:
-          path: .trivycache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Trivy vulnerabilities scan
-        run: |
-          ./trivy --exit-code 0 --cache-dir .trivycache/ --severity HIGH --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
-          ./trivy --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress smana/helloworld:sha-${GITHUB_SHA:0:7}
 
       - name: Check Kubernetes yamls
         uses: stefanprodan/kube-tools@v1.5.0
