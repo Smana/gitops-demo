@@ -5,8 +5,6 @@ on:
     branches:
       - "main"
       - "staging"
-    types:
-      - "closed"
 
 jobs:
   release:
@@ -15,6 +13,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      - name: Define stage
+        run: |
+          if [[ "${{ github.event.pull_request.base.ref }}" == "main" ]]; then
+            echo "STAGE=prod" >> $GITHUB_ENV
+          else
+            echo "STAGE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          fi
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -35,16 +41,14 @@ jobs:
           images: |
             smana/helloworld
           tags: |
-            # dynamically set the branch name as a prefix
-            type=sha,prefix={{branch}}-
-            # dynamically set the branch name and sha as a custom tag
-            type=raw,value={{branch}}-{{sha}}
+            type=sha,prefix=${{ env.STAGE }}-
+            type=raw,value=${{ env.STAGE }}-{{sha}}
 
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -56,22 +60,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: |
-            smana/helloworld
-          tags: |
-            # dynamically set the branch name as a prefix
-            type=sha,prefix={{branch}}-
-            # dynamically set the branch name and sha as a custom tag
-            type=raw,value={{branch}}-{{sha}}
+      - name: Define stage
+        run: |
+          if [[ "${{ github.event.pull_request.base.ref }}" == "main" ]]; then
+            echo "STAGE=prod" >> $GITHUB_ENV
+          else
+            echo "STAGE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          fi
+
+      - name: Extract short hash
+        id: shorthash
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/smana/helloworld:${{ steps.meta.outputs.tags }}'
+          image-ref: 'docker.io/smana/helloworld:${{ env.STAGE }}-${{ steps.shorthash.outputs.sha_short }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
