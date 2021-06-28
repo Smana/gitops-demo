@@ -22,6 +22,10 @@ jobs:
             echo "STAGE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
           fi
 
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "::set-output name=ts::$(date +'%s')"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -43,6 +47,7 @@ jobs:
           tags: |
             type=sha,prefix=${{ env.STAGE }}-
             type=raw,value=${{ env.STAGE }}-{{sha}}
+            type=raw,value=${{ env.STAGE }}-{{ sha }}-${{ steps.timestamp.outputs.ts }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
