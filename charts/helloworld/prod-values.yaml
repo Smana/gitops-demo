@@ -1,0 +1,10 @@
+global:
+  environment: "prod"
+  cluster: "eu-prod-01"
+  region: "eu-west-1"
+
+replicaCount: 4
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
