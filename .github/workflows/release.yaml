@@ -58,33 +58,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-  vulnerabilities-scan:
-    name: "Scan for vulnerabilities 🔒️"
-    runs-on: ubuntu-latest
-    needs: release
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Define stage
-        run: |
-          if [[ "${{ github.event.pull_request.base.ref }}" == "main" ]]; then
-            echo "STAGE=prod" >> $GITHUB_ENV
-          else
-            echo "STAGE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
-          fi
-
-      - name: Extract short hash
-        id: shorthash
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'docker.io/smana/helloworld:${{ env.STAGE }}-${{ steps.shorthash.outputs.sha_short }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
