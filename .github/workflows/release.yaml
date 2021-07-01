@@ -51,7 +51,7 @@ jobs:
             type=raw,value=${{ env.STAGE }}-{{sha}}
             type=raw,value=${{ env.STAGE }}-{{ sha }}-${{ steps.timestamp.outputs.ts }}
 
-      - name: Build and push
+      - name: Build and push container image
         uses: docker/build-push-action@v2
         with:
           context: .
