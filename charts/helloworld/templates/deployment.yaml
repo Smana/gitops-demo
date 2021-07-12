@@ -32,7 +32,7 @@ spec:
             - name: USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Chart.Name }}
+                  name: {{ .Values.environment }}-{{ .Chart.Name }}
                   key: user
             - name: PASSWORD
               valueFrom:
