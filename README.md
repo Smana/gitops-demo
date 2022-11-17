@@ -93,3 +93,16 @@ This is a simple web applications to demonstrate a GitOps workflow using **Githu
 
 This is a good practice to separate the code of our application and the config to define how it is deployed.
 The GitOps workflow is defined if the repository [**flux-demo**](https://github.com/Smana/flux-demo)
+
+## Release a new version
+
+The git branch format is important for the release workflow.
+Here are the **prefixes** to prepend to the branch names:
+
+* Bug fixes: `fix/`
+* Features: `feat/`
+* Maintenance changes: `chore/`
+* Documentation changes: `doc/`
+
+By default it will create a **draft** release with a patch tag (eg. v0.1.**1**)
+It is possible to add a label `minor` or `major` to control the version.

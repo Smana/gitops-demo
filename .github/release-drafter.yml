@@ -19,7 +19,7 @@ exclude-labels:
   - "skip-changelog"
 
 autolabeler:
-  - label: "chore"
+  - label: "maintenance"
     branch:
       - '/chore\/.+/'
   - label: "documentation"
