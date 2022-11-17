@@ -1,0 +1,60 @@
+name: Docker
+
+on:
+  pull_request:
+    branches:
+      - "main"
+      - "staging"
+    types:
+      - closed
+
+jobs:
+  docker:
+    name: "Build & Push Docker image 🚀"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Define stage
+        run: |
+          if [[ "${{ github.event.pull_request.base.ref }}" == "main" ]]; then
+            echo "STAGE=prod" >> $GITHUB_ENV
+          else
+            echo "STAGE=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
+          fi
+
+      - name: Get current timestamp
+        id: timestamp
+        run: echo "::set-output name=ts::$(date +'%s')"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            smana/helloworld
+          tags: |
+            type=sha,prefix=${{ env.STAGE }}-
+            type=raw,value=${{ env.STAGE }}-{{sha}}
+            type=raw,value=${{ env.STAGE }}-{{ sha }}-${{ steps.timestamp.outputs.ts }}
+
+      - name: Build and push container image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
