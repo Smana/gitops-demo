@@ -19,23 +19,18 @@ exclude-labels:
   - "skip-changelog"
 
 autolabeler:
+  - label: "enhancement"
+    branch:
+      - '/feat\/.+/'
+  - label: "bug"
+    branch:
+      - '/fix\/.+/'
   - label: "maintenance"
     branch:
       - '/chore\/.+/'
   - label: "documentation"
-    files:
-      - "*.md"
     branch:
       - '/doc\/.+/'
-  - label: "bug"
-    branch:
-      - '/fix\/.+/'
-      - '/Fix\/.+/'
-  - label: "enhancement"
-    branch:
-      - '/feature\/.+/'
-      - '/feat\/.+/'
-      - '/Feat\/.+/'
 
 version-resolver:
   major:
