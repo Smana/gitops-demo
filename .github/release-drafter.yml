@@ -1,4 +1,5 @@
 tag-template: "v$RESOLVED_VERSION"
+
 categories:
   - title: "🚀 Features"
     labels:
@@ -13,10 +14,16 @@ categories:
     label: "chore"
 exclude-labels:
   - "skip-changelog"
+
 autolabeler:
   - label: "chore"
     branch:
       - '/chore\/.+/'
+  - label: "chore"
+    files:
+      - "*.md"
+    branch:
+      - '/doc\/.+/'
   - label: "bug"
     branch:
       - '/fix\/.+/'
@@ -26,11 +33,7 @@ autolabeler:
     branch:
       - '/feature\/.+/'
       - '/feat\/.+/'
-  - label: "chore"
-    files:
-      - "*.md"
-    branch:
-      - '/doc\/.+/'
+
 template: |
   ## Changes
 
