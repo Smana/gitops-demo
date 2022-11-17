@@ -12,6 +12,9 @@ categories:
       - "bug"
   - title: "🧰 Maintenance"
     label: "chore"
+  - title: "🗒️ Documentation"
+    label: "documentation"
+
 exclude-labels:
   - "skip-changelog"
 
@@ -19,7 +22,7 @@ autolabeler:
   - label: "chore"
     branch:
       - '/chore\/.+/'
-  - label: "chore"
+  - label: "documentation"
     files:
       - "*.md"
     branch:
@@ -27,12 +30,12 @@ autolabeler:
   - label: "bug"
     branch:
       - '/fix\/.+/'
-    title:
-      - "/fix/i"
+      - '/Fix\/.+/'
   - label: "enhancement"
     branch:
       - '/feature\/.+/'
       - '/feat\/.+/'
+      - '/Feat\/.+/'
 
 template: |
   ## Changes
